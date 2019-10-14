@@ -1,16 +1,12 @@
-Django==2.2.5
-pytz==2019.2
-sqlparse==0.3.0
-
-
-
-
 from django.db import models
 import datetime
 
-class MealCategory(models.Model):
+class Menu(models.Model):
     id = models.AutoField(primary_key=True)
-    label = models.TextField(max_length=255)
+    title = models.TextField(max_length=255, blank=False)
+    description = models.TextField(max_length=500, blank=True)
+    image_url = models.CharField(max_length=255, blank=True)
+    availability_date = models.DateTimeField()
     updating_date = models.DateTimeField(default=datetime.datetime.now)
     inserting_date = models.DateTimeField(default=datetime.datetime.now)
 

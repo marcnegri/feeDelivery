@@ -1,11 +1,11 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from ..models.Food import Food
+from ..models.Menu import Menu
 
-class FoodSerializer(serializers.ModelSerializer):
+class MenuSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Food
-        fields = ['id', 'title', 'description', 'unit_price', 'image_url']
+        model = Menu
+        fields = ['id', 'title', 'description', 'availability_date', 'image_url']
 
         def create(self, validated_data):
             return User.objects.create(**validated_data)

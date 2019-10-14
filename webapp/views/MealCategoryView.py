@@ -2,53 +2,53 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
 from rest_framework.parsers import JSONParser
-from ..serializers.FoodSerializer import FoodSerializer
-from ..models.Food import Food
+from ..serializers.MealCategorySerializer import MealCategorySerializer
+from ..models.MealCategory import MealCategory
 
 
 @csrf_exempt
-def food_list(request):
+def meal_category_list(request):
     """
     List all code users, or create a new user.
     """
     if request.method == 'GET':
-        user = Food.objects.all()
+        user = MealCategory.objects.all()
         serializer_context = {
             'request': request,
         }
-        serializer = FoodSerializer(user, many=True, context=serializer_context)
+        serializer = MealCategorySerializer(user, many=True, context=serializer_context)
         return JsonResponse(serializer.data, safe=False)
 
     elif request.method == 'POST':
         data = JSONParser().parse(request)
-        serializer = FoodSerializer(data=data)
+        serializer = MealCategorySerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
 
 @csrf_exempt
-def food_details(request, pk):
+def meal_category_details(request, pk):
     """
     Retrieve, update or delete a user.
     """
     try:
-        food = Food.objects.get(pk=pk)
-    except Food.DoesNotExist:
+        company = MealCategory.objects.get(pk=pk)
+    except MealCategory.DoesNotExist:
         return HttpResponse(status=404)
 
     if request.method == 'GET':
-        serializer = FoodSerializer(food)
+        serializer = MealCategorySerializer(company)
         return JsonResponse(serializer.data)
 
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
-        serializer = FoodSerializer(food, data=data)
+        serializer = MealCategorySerializer(company, data=data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data)
         return JsonResponse(serializer.errors, status=400)
 
     elif request.method == 'DELETE':
-        food.delete()
+        company.delete()
         return HttpResponse(status=204)
