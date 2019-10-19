@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
+from rest_framework import generics
 from rest_framework.parsers import JSONParser
 from ..serializers.CompanySerializer import CompanySerializer
 from ..models.Company import Company
@@ -27,6 +28,7 @@ def company_list(request):
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
 
+
 @csrf_exempt
 def company_details(request, pk):
     """
@@ -52,3 +54,22 @@ def company_details(request, pk):
     elif request.method == 'DELETE':
         company.delete()
         return HttpResponse(status=204)
+
+class CompanyList(generics.ListAPIView):
+    serializer_class = CompanySerializer
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = Company.objects.all()
+        access_code = self.request.query_params.get('access_code', None)
+        try:
+            if access_code is not None:
+                queryset = queryset.filter(access_code=access_code)
+
+            if self.request.method == 'GET':
+                return queryset
+        except Company.DoesNotExist:
+            return HttpResponse(status=404)

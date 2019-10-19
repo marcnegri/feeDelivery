@@ -1,4 +1,4 @@
-from ..models.Company import Company
+from webapp.models.Company import Company
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 

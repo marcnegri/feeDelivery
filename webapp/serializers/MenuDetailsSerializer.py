@@ -14,7 +14,7 @@ class MenuDetailsSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return MenuDetails.objects.create(**validated_data)
 
-    def get_meals(self, menuDetails):
+    def get_meals(self):
         try:
             lstMeals = []
             for menudet in MenuDetails.objects.all():

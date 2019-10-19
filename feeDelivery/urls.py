@@ -17,7 +17,9 @@ from django.contrib import admin
 from django.urls import path
 from webapp.views import UserView, MenuView, CompanyView, MenuDetailsView
 from webapp.views import MealView, MealCategoryView
+from webapp.views.CompanyView import CompanyList
 from django.urls import path
+from django.conf.urls import url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,6 +29,9 @@ urlpatterns = [
     path('menus/<int:pk>/meals/', MenuDetailsView.menu_details_meals),
     path('meals/', MealView.meal_list),
     path('mealcategories/', MealCategoryView.meal_category_list, name='get_all_meal_category'),
-    path('companies/', CompanyView.company_list),
+    path('companies/', CompanyList.as_view()),
+    #path('companies/', CompanyView.company_list),
+
+    path('companies/<int:pk>/', CompanyView.company_details),
 
 ]
