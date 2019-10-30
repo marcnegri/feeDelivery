@@ -4,9 +4,12 @@ from django.http import HttpResponse, JsonResponse
 from rest_framework.parsers import JSONParser
 from ..serializers.MenuSerializer import MenuSerializer
 from ..models.Menu import Menu
-
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 @csrf_exempt
+@api_view(['GET', 'PUT'])
+@permission_classes([IsAuthenticated])
 def menu_list(request):
     """
     List all code users, or create a new user.

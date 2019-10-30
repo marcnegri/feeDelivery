@@ -3,6 +3,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
 from rest_framework import generics
 from rest_framework.parsers import JSONParser
+from rest_framework.permissions import AllowAny
+
 from ..serializers.CompanySerializer import CompanySerializer
 from ..models.Company import Company
 
@@ -56,6 +58,7 @@ def company_details(request, pk):
         return HttpResponse(status=204)
 
 class CompanyList(generics.ListAPIView):
+    permission_classes = [AllowAny]
     serializer_class = CompanySerializer
 
     def get_queryset(self):
