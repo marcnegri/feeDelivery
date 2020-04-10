@@ -2,8 +2,9 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
 from rest_framework import generics
+from rest_framework.decorators import permission_classes, api_view
 from rest_framework.parsers import JSONParser
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from ..serializers.CompanySerializer import CompanySerializer
 from ..models.Company import Company
@@ -56,6 +57,19 @@ def company_details(request, pk):
     elif request.method == 'DELETE':
         company.delete()
         return HttpResponse(status=204)
+
+@csrf_exempt
+@api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def company_discount(request, pk=0):
+    try:
+        if pk == 0 and request.user.is_authenticated:
+            pk = request.user.company.id
+
+        comp = Company.objects.get(pk=pk)
+        return HttpResponse(comp.bill_participation)
+    except Company.DoesNotExist:
+        return HttpResponse(status=404)
 
 class CompanyList(generics.ListAPIView):
     permission_classes = [AllowAny]

@@ -18,6 +18,7 @@ from django.urls import path
 from webapp.views import UserView, MenuView, CompanyView, MenuDetailsView
 from webapp.views import MealView, MealCategoryView
 from webapp.views.CompanyView import CompanyList
+from webapp.views import PaymentView
 from django.urls import path
 from django.conf.urls import url
 from rest_framework.authtoken.views import obtain_auth_token
@@ -26,6 +27,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', UserView.user_list),
     path('users/<int:pk>/', UserView.user_detail),
+    path('profile/', UserView.user_detail),
+    path('stripe/customer/', PaymentView.create_stripe_customer),
+    path('users/cards/', PaymentView.add_credit_card),
     url(r'^users/(?P<_email>[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})$', UserView.user_detail_by_email),
     path('menus/', MenuView.menu_list),
     path('menus/<int:pk>/meals/', MenuDetailsView.menu_details_meals),
@@ -33,6 +37,7 @@ urlpatterns = [
     path('mealcategories/', MealCategoryView.meal_category_list, name='get_all_meal_category'),
     path('companies/', CompanyList.as_view()),
     path('companies/<int:pk>/', CompanyView.company_details),
+    path('companies/<int:pk>/discount/', CompanyView.company_discount),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
 
 ]

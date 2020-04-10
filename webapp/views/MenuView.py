@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 
 @csrf_exempt
 @api_view(['GET', 'PUT'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def menu_list(request):
     """
     List all code users, or create a new user.

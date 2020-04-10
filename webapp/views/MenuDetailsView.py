@@ -59,7 +59,7 @@ def menu_details_details(request, pk):
 def menu_details_meals(request, pk):
     try:
         lstMeals = list()
-        for menudet in MenuDetails.objects.filter(menu=pk):
+        for menudet in MenuDetails.objects.filter(menu=pk).order_by('meal__meal_category__order'):
             lstMeals.append(menudet.meal)
 
         if request.method == 'GET':

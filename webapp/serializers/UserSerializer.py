@@ -14,7 +14,8 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         depth = 2
         fields = ['username', 'first_name', 'last_name', 'id',
-                   'is_active', 'id', 'email', 'company', 'delivery_address']
+                   'is_active', 'id', 'email', 'company', 'delivery_address',
+                  'payment_service_id']
 
     def create(self, validated_data):
 

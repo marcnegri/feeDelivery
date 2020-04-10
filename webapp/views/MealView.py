@@ -13,6 +13,7 @@ def meal_list(request):
     """
     if request.method == 'GET':
         user = Meal.objects.all()
+
         serializer_context = {
             'request': request,
         }

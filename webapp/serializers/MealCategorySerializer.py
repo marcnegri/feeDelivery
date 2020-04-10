@@ -5,7 +5,7 @@ from ..models.MealCategory import MealCategory
 class MealCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = MealCategory
-        fields = ['id', 'label']
+        fields = ['id', 'label', 'code']
 
         def create(self, validated_data):
             return User.objects.create(**validated_data)

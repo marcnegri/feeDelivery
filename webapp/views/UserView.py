@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 
 
 @api_view(['GET', 'POST'])
-@permission_classes([AllowAny])
+@permission_classes([IsAuthenticated])
 @csrf_exempt
 def user_list(request):
     """
@@ -43,15 +43,18 @@ def user_list(request):
 
 
 
-@api_view(['GET', 'PUT'])
-@permission_classes([AllowAny])
 @csrf_exempt
-def user_detail(request, pk):
+@api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def user_detail(request, pk=0):
     """
     Retrieve, update or delete a user.
     """
     try:
-        user = User.objects.get(pk=pk)
+        if pk == 0 and request.user.is_authenticated:
+            user = request.user
+        else:
+            user = User.objects.get(pk=pk)
     except User.DoesNotExist:
         return HttpResponse(status=404)
 
